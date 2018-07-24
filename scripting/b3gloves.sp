@@ -20,5 +20,5 @@ public void OnPluginStart()
 
 public Action GlovesCommand(int client, int args)
 {
-    PrintToClient(client, "%s Gloves command.", PREFIX);
+    PrintToChat(client, "%s Gloves command.", PREFIX);
 }
