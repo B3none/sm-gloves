@@ -1,20 +1,19 @@
 #include <sdktools>
 #include <clientprefs>
-#include <SteamWorks>
 
 #define MENU_TEXT 50
 #define ARRAY_SIZE 96
 #define MENUACTIONS MenuAction_Display|MenuAction_DisplayItem|MenuAction_DrawItem
-#define MESSAGE_PREFIX "[\x02MelonCartel\x01]"
+#define MESSAGE_PREFIX "[\x02Gloves\x01]"
 
 #pragma semicolon 1
 #pragma newdecls required
 
 public Plugin myinfo = {
-    name = "[MelonCartel] Gloves Menu",
+    name = "[SM] Gloves",
     author = "B3none",
-    description = "Our gloves plugin.",
-    version = "1.2.0",
+    description = "gloves plugin.",
+    version = "1.2.1",
     url = "https://github.com/b3none"
 };
 
@@ -34,9 +33,9 @@ ck_Glove_Quality = INVALID_HANDLE;
 Handle g_hCookieDefaultGloves = INVALID_HANDLE;
 Handle g_hCookieEnabled = INVALID_HANDLE;
 bool b_IsEnabled[MAXPLAYERS + 1];
-bool b_IsMember[MAXPLAYERS + 1];
 
-public void OnPluginStart() {
+public void OnPluginStart() 
+{
     alModels = new ArrayList(ARRAY_SIZE);
     LoadKV();
     CreateMenus();
@@ -61,61 +60,6 @@ public void OnPluginStart() {
     RegConsoleCmd("sm_gloves", Cmd_ModelsMenu);
     RegConsoleCmd("sm_glove", Cmd_ModelsMenu);
     RegConsoleCmd("sm_gl", Cmd_ModelsMenu);
-    RegConsoleCmd("sm_check", Cmd_Check);
-}
-
-public Action Cmd_Check(int client, any args)
-{
-	if (b_IsMember[client]) {
-		return;
-	}
-
-	GetGroupStatus(client);
-}
-
-public void GetGroupStatus(int iClient)
-{
-	char sAuth64[64];
-	GetClientAuthId(iClient, AuthId_SteamID64, sAuth64, sizeof(sAuth64));
-
-	char sUserId[64];
-	IntToString(GetClientUserId(iClient), sUserId, sizeof(sUserId));
-
-	char requestUrl[128];
-	Format(requestUrl, sizeof(requestUrl), "https://api.gamssi.com/v1/group-checker/%s", sAuth64);
-
-	Handle request = SteamWorks_CreateHTTPRequest(k_EHTTPMethodPOST, requestUrl);
-	if (request == INVALID_HANDLE) {
-		LogError("[group checker] Failed to create HTTP POST request using url: %s", requestUrl);
-		PrintToConsole(iClient, "failed to create request");
-		return;
-	}
-
-	DataPack pack = new DataPack();
-	pack.WriteString(sUserId);
-
-	SteamWorks_SetHTTPCallbacks(request, OnInfoReceived);
-	SteamWorks_SetHTTPRequestContextValue(request, pack);
-	SteamWorks_SendHTTPRequest(request);
-}
-
-public int OnInfoReceived(Handle request, bool failure, bool requestSuccessful, EHTTPStatusCode statusCode, Handle data)
-{
-	DataPack pack = view_as<DataPack>(data);
-	pack.Reset();
-	char sUserId[64];
-	pack.ReadString(sUserId, sizeof(sUserId));
-
-	int iClient = GetClientOfUserId(StringToInt(sUserId));
-
-	int len = 0;
-	SteamWorks_GetHTTPResponseBodySize(request, len);
-	char[] response = new char[len];
-	SteamWorks_GetHTTPResponseBodyData(request, response, len);
-
-	b_IsMember[iClient] = StrContains(response, "grantAccess\":true") != -1;
-
-	delete pack;
 }
 
 public Action Cmd_Gl3(int client, int args)
@@ -156,8 +100,6 @@ public void OnPluginEnd()
 
 public void OnClientCookiesCached(int client)
 {
-    GetGroupStatus(client);
-
     char strCookie[8];
 
     GetClientCookie(client, g_hCookieDefaultGloves, strCookie, sizeof(strCookie));
@@ -216,12 +158,8 @@ public void OnClientCookiesCached(int client)
     }
 
     if ((skin[0] != 0 || (team_divided && skin[1] != 0)) && IsClientInGame(client) && IsPlayerAlive(client)) {
-        if (b_IsMember[client]) {
-            SetGlove(client);
-            PrintToChat(client, "%s %t", MESSAGE_PREFIX, "Restored");
-        } else {
-            PrintToChat(client, "%s Please join our \x04!steam\x01 group, then \x04!check\x01 to gain access.", MESSAGE_PREFIX);
-        }
+        SetGlove(client);
+        PrintToChat(client, "%s %t", MESSAGE_PREFIX, "Restored");
     }
 }
 
@@ -717,11 +655,7 @@ public Action FakeTimer(Handle timer, int client)
 
 public Action Cmd_ModelsMenu(int client, int args)
 {
-    if (b_IsMember[client]) {
-        ModelMenu.Display(client, 40);
-    } else {
-        PrintToChat(client, "%s Please join our \x04!steam\x01 group, then \x04!check\x01 to gain access.", MESSAGE_PREFIX);
-    }
+    ModelMenu.Display(client, 40);
 
     return Plugin_Handled;
 }
@@ -800,11 +734,6 @@ stock void SaveGlove(int client, int model = -1, int skin = -1, int quality = -1
 
 stock void SetGlove(int client, int model = -1, int skin = -1, int wear = -1)
 {
-    if (!b_IsMember[client]) {
-        PrintToChat(client, "%s Please join our \x04!steam\x01 group, then \x04!check\x01 to gain access.", MESSAGE_PREFIX);
-    	return;
-    }
-
     if (!b_IsEnabled[client])
     {
         return;
