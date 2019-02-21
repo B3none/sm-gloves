@@ -1,0 +1,107 @@
+"Phrases"
+{
+	"Restored"
+	{
+		"en"	"Your gloves restored!"
+	}
+	"Menu_Title"
+	{
+		"en"	"Glove selection:"
+	}
+	"Menu_Standart"
+	{
+		"en"	"Default"
+	}
+	"Menu_Quality"
+	{
+		"en"	"Quality"
+	}
+	"Menu_Back"
+	{
+		"en"	"Back"
+	}
+	"Menu_Close"
+	{
+		"en"	"Close"
+	}
+	"Menu_QualityTitle"
+	{
+		"en"	"Quality selection"
+	}
+	"Menu_Quality100"
+	{
+		"en"	"Factory New"
+	}
+	"Menu_Quality75"
+	{
+		"en"	"Minimal Wear"
+	}
+	"Menu_Quality50"
+	{
+		"en"	"Field-Tested"
+	}
+	"Menu_Quality25"
+	{
+		"en"	"Battle-Scarred"
+	}
+	"Menu_Quality0"
+	{
+		"en"	"Junk \n "
+	}
+	"Menu_Random"
+	{
+		"en"	"Random\n "
+	}
+	"RandomSet"
+	{
+		"en"	"Random skin for %s%s%s set."
+	}
+	"NoAccess"
+	{
+		"en"	"You %sdon't have access%s to these gloves!"
+	}
+	"GloveSave"
+	{
+		"en"	"Gloves %s%s | %s%s saved."
+	}
+	"QualitySave"
+	{
+		"en"	"Selected quality(%s%d%%%s) saved."
+	}
+	"Reset"
+	{
+		"en"	"Gloves reset."
+	}
+	"ResetTeam"
+	{
+		"en"	"Gloves reset to default %s%s | %s%s."
+	}
+	"LimitQuality"
+	{
+		"en"	"Quality will be %slimited%s to %s%d%%%s with current gloves."
+	}
+	"LimitQuality2"
+	{
+		"en"	"Choised quality be %slimited%s to %s%d%%%s with current gloves."
+	}
+	"RestrictQuality"
+	{
+		"en"	"Choised quality not available with current gloves."
+	}
+	"Menu_NoTeamWarning"
+	{
+		"en"	"To select gloves, you should be in T or CT team!"
+	}
+	"Menu_NoTeamTitle"
+	{
+		"en"	" \n \nTo select gloves \njoin T or CT team\n "
+	}
+	"Menu_Title_T" 
+	{
+		"en"	"Glove selection for T:"
+	}
+	"Menu_Title_CT" 
+	{
+		"en"	"Glove selection for CT:"
+	}
+}
