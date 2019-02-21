@@ -1,3 +1,4 @@
+#include <sourcemod>
 #include <sdktools>
 #include <clientprefs>
 
@@ -13,7 +14,7 @@ public Plugin myinfo = {
     name = "[SM] Gloves",
     author = "B3none",
     description = "gloves plugin.",
-    version = "1.2.1",
+    version = "1.3.0",
     url = "https://github.com/b3none"
 };
 
@@ -201,7 +202,7 @@ public void LoadKV()
 {
     KeyValues kv = new KeyValues("Gloves");
     char confPath[256];
-    BuildPath(Path_SM, confPath, sizeof(confPath), "/configs/ac_gloves.txt");
+    BuildPath(Path_SM, confPath, sizeof(confPath), "/configs/sm-gloves.txt");
     if (kv.ImportFromFile(confPath)) {
         kv.Rewind();
         kv.GetString("tag", tag1, sizeof(tag1), "GL");
@@ -265,7 +266,7 @@ public void LoadKV()
     }
 
     /* Translation load */
-    LoadTranslations("ac_gloves.phrases.txt");
+    LoadTranslations("sm-gloves.phrases.txt");
     PrintToServer("[gloves] %d models loaded!", GetModelsCount());
     delete kv;
 
